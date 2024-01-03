@@ -1,74 +1,123 @@
 import fs from 'fs';
+import path from 'path';
+
+const filePath = 'productos.json';
+/* const data = [{ example: 'data' }];
+
+fs.writeFile(filePath, JSON.stringify(data, null, 2), 'utf8', (err) => {
+    if (err) {
+        console.error('Error al escribir en el archivo:', err);
+    } else {
+        console.log('Datos guardados en el archivo:', filePath);
+    }
+}); */
 
 class ProductsManager {
     constructor(filePath = 'productos.json') {
         this.products = [];
-        this.path = filePath;
+        this.path = path.resolve(filePath);
         this.loadFromFile(this.path);
+    }
+
+    async readFile() {
+        try {
+            const dataProducts = await fs.promises.readFile(this.path, 'utf-8')
+            console.log(dataProducts);
+            return JSON.parse(dataProducts)
+        } catch (error) {
+            return []
+        }
     }
 
     getProducts() {
         return this.products;
     }
 
-    addProduct(product) {
-        if (!product.title || !product.description || !product.price || !product.thumbnail || !product.code || !product.stock || !product.status || !product.category)
-            return `Todos los campos del artículo con nombre "${product.title}" deben contener datos`
-
-        const newProduct = this.products.find(prod => prod.code === product.code);
-        if (newProduct) {
-            console.log(`El código del artículo con nombre "${product.title}" no puede estar repetido`);
-            return "No es posible cargar más de un producto con el mismo código"
+    async addProduct(product) {
+        try {
+            console.log('Iniciando operación AddProduct: ', product)
+            if (!product.title || !product.description || !product.price || !product.thumbnail || !product.code || !product.stock || !product.status || !product.category){
+                console.log(`Todos los campos del artículo con nombre "${product.title}" deben contener datos`);
+                return `Todos los campos del artículo con nombre "${product.title}" deben contener datos`
+            }
+    
+            const newProduct = await this.products.find(prod => prod.code === product.code);
+            if (newProduct) {
+                console.log(`El código del artículo con nombre "${product.title}" no puede estar repetido`);
+                return "No es posible cargar más de un producto con el mismo código"
+            }
+    
+            product.id = this.products.length + 1
+            this.products.push(product);
+            console.log(`Se agregó el artículo con nombre "${product.title}" al arreglo`);
+    
+            await this.saveToFile();
+    
+            return `${product.title} agregado`            
+        } catch (error) {
+            console.error('Error en addProduct:', error);
+            return error
         }
-
-        product.id = this.products.length + 1
-        this.products.push(product);
-        console.log(`Se agregó el artículo con nombre "${product.title}" al arreglo`)
-
-        this.saveToFile()
-
-        return `${product.title} agregado`
     }
 
-    getProductById(pid) {
-        const otroProducto = this.products.find(prod => prod.id === pid)
-        if (!otroProducto)
-            return `El articulo seleccionado con ID "${pid}" no existe`
-
-        return otroProducto
+    async getProductById(pid) {
+        try {
+            const otroProducto = await this.products.find(prod => prod.id === pid)
+            if (!otroProducto)
+                return `El articulo seleccionado con ID "${pid}" no existe`
+    
+            return otroProducto            
+        } catch (error) {
+            return error
+        }
     }
 
-    updateProduct(pid, updatedFields) {
-        const productIndex = this.products.findIndex(prod => prod.id === pid);
-        if (productIndex === -1) {
-            throw new Error(`El artículo con ID "${pid}" no existe`);
+    async updateProduct(pid, updatedFields) {
+        try {
+            const productIndex = this.products.findIndex(prod => prod.id === pid);
+            if (productIndex === -1) {
+                throw new Error(`El artículo con ID "${pid}" no existe`);
+            }
+    
+            // Validar que al menos un campo sea proporcionado
+            if (!Object.keys(updatedFields).length) {
+                throw new Error(`Debe proporcionar al menos un campo para actualizar`);
+            }
+    
+            // Actualizar solo los campos proporcionados
+            this.products[productIndex] = { ...this.products[productIndex], ...updatedFields };
+    
+            await this.saveToFile()
+    
+            return `El artículo con ID "${pid}" ha sido actualizado`;            
+        } catch (error) {
+            return error;
         }
-
-        // Validar que al menos un campo sea proporcionado
-        if (!Object.keys(updatedFields).length) {
-            throw new Error(`Debe proporcionar al menos un campo para actualizar`);
-        }
-
-        // Actualizar solo los campos proporcionados
-        this.products[productIndex] = { ...this.products[productIndex], ...updatedFields };
-
-        this.saveToFile()
-
-        return `El artículo con ID "${pid}" ha sido actualizado`;
     }
 
-    deleteProduct(pid) {
-        const eliminarProducto = this.products.filter(prod => prod.id !== pid)
-        if (eliminarProducto) {
-            console.log(`Se eliminó el artículo con ID "${pid}" del arreglo`)
-            this.products = eliminarProducto
-            this.saveToFile()
-            return this.products//eliminarProducto
+    async deleteProduct(pid) {
+        try {
+            const eliminarProducto = this.products.filter(prod => prod.id !== pid)
+            
+            if (eliminarProducto.length === this.products.length ){
+                return `El producto cuyo ID es "${pid}" no existe, no se puede eliminar un producto que no existe`
+            }
+            if (eliminarProducto) {
+                console.log(`Se eliminó el artículo con ID "${pid}" del arreglo`)
+                this.products = eliminarProducto
+                await this.saveToFile()
+                return this.products//eliminarProducto
+            }
+            
+            
+        } catch (error) {
+            return error
         }
     }
 
     async saveToFile() {
         const data = JSON.stringify(this.products, null, 2);
+        //console.log('Datos a guardar:', data); // Agregar esta línea
         await fs.promises.writeFile(this.path, data, 'utf8')
             .then(() => {
                 console.log('Datos guardados en el archivo:', this.path);
@@ -96,38 +145,10 @@ const productos = new ProductsManager();
 // Mostrar la lista inicial de productos
 //console.log(productos.getProducts());
 
-const producto1 = { title: "producto 1", description: "Este es el primer producto de prueba", price: 1590, thumbnail: "Sin imagen", code: "abc123", stock: 25, status: true, category: "products" }
-
-const producto2 = { title: "producto 2", description: "Este es otro producto de prueba", price: 2560, thumbnail: "Sin imagen", code: "abc1234", stock: 188,status: true, category: "products" }
-
-const producto3 = { title: "producto 3", description: "Este es otro producto más de prueba", price: 400, thumbnail: "Sin imagen", code: "abc12345", stock: 20, status: true, category: "products" }
-
-const producto4 = { title: "producto 4", description: "Este es el cuarto producto de prueba", price: 800, thumbnail: "Sin imagen", code: "abc123456", stock: 100, status: true, category: "products" }
-
-const producto5 = { title: "producto 5", description: "Este es el quinto producto de prueba", price: 500, thumbnail: "Sin imagen", code: "abc1234567", stock: 100, status: true, category: "products" }
-
-const producto6 = { title: "producto 6", description: "Este es el sexto producto de prueba", price: 5600, thumbnail: "Sin imagen", code: "abc12345678", stock: 100, status: true, category: "products" }
-
-const producto7 = { title: "producto 7", description: "Este es el séptimo producto de prueba", price: 3200, thumbnail: "Sin imagen", code: "abc1234568", stock: 100, status: true, category: "products" }
-
-const producto8 = { title: "producto 8", description: "Este es el octavo producto de prueba", price: 20, thumbnail: "Sin imagen", code: "abc1234569", stock: 100, status: true, category: "products" }
-
-const producto9 = { title: "producto 9", description: "Este es el noveno producto de prueba", price: 70, thumbnail: "Sin imagen", code: "abc12345689", stock: 100, status: true, category: "products" }
-
-const producto10 = { title: "producto 10", description: "Este es el décimo producto de prueba", price: 890, thumbnail: "Sin imagen", code: "abc12345679", stock: 100, status: true, category: "products" }
-
 //Agregar algunos productos
 // console.log(productos.addProduct(producto1));
 // console.log(productos.addProduct(producto2));
 // console.log(productos.addProduct(producto3));
-// console.log(productos.addProduct(producto4));
-// console.log(productos.addProduct(producto5));
-// console.log(productos.addProduct(producto6));
-// console.log(productos.addProduct(producto7));
-// console.log(productos.addProduct(producto8));
-// console.log(productos.addProduct(producto9));
-// console.log(productos.addProduct(producto10));
-// Mostrar la lista de productos ya agregados
 
 // console.log(productos.getProducts());
 // console.log(productos.deleteProduct(4));
@@ -137,4 +158,4 @@ const producto10 = { title: "producto 10", description: "Este es el décimo prod
 // console.log(productos.updateProduct(2, {price:305, stock:13}))
 // console.log(productos.getProductById(3))
 
-export default productos
+export default ProductsManager
