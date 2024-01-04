@@ -12,7 +12,8 @@ const httpServer = app.listen(PORT, () => {
     console.log(`escuchando en el puerto ${PORT}`)
 })
 
-const socketServer = new Server(httpServer);
+//socket del lado del servidor
+const socketServer = new Server(httpServer);//por convención este servidor lleva el nombre de io solamente
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
@@ -32,6 +33,8 @@ socketServer.on('connection', socket => {
     socket.on('message', data => {
         console.log(data);
     })
+
+    socket.emit('otro-mensaje', "Para leer en la consola del navegador")
 })
 
 

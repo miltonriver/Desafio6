@@ -1,0 +1,9 @@
+<h1>Listado de Productos</h1>
+
+{{#each productos}}
+    <li>
+        Nombre: <b>{{this.title}}</b>
+        <p>Precio: <b>$ {{this.price}}</b></p>
+        <p>Stock: <b>{{this.stock}}</b></p>
+    </li>
+{{/each}}
