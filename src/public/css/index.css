@@ -3,3 +3,24 @@ h1{
     color: blue;
     text-align: center;
 }
+
+#form_add{
+    display: flex;
+    flex-direction: column;
+    color: red;
+}
+
+#form_delete{
+    display: flex;
+    flex-direction: column;
+    color: blueviolet;
+}
+
+#add_product, #delete_product{
+    border-radius: 5px;
+    color: red;
+    padding: 3px;
+    font-weight: bold;
+    margin: 5px;
+    margin-top: 20px;
+}

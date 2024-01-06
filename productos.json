@@ -31,5 +31,16 @@
     "status": true,
     "category": "productos",
     "id": 3
+  },
+  {
+    "title": "producto 4",
+    "description": "Este es el cuarto producto del catálogo",
+    "price": 524,
+    "thumbnail": "Sin imagen",
+    "code": "abc123456",
+    "stock": 26,
+    "status": true,
+    "category": "productos",
+    "id": 4
   }
 ]

@@ -1,9 +1,44 @@
 <h1>Listado de Productos</h1>
 
 {{#each productos}}
-    <li>
-        Nombre: <b>{{this.title}}</b>
-        <p>Precio: <b>$ {{this.price}}</b></p>
-        <p>Stock: <b>{{this.stock}}</b></p>
-    </li>
+<li>
+    Nombre: <b>{{this.title}}</b>
+    <p>Precio: <b>$ {{this.price}}</b></p>
+    <p>Stock: <b>{{this.stock}}</b></p>
+</li>
 {{/each}}
+
+<h2>Agregar un producto</h2>
+
+<form action="" method="post" id="form_add">
+    <li>
+        <label for="title">Nombre del Producto:</label>
+        <input type="text" id="title" name="product_title" />
+    </li>
+    <li>
+        <label for="price">Precio:</label>
+        <input type="text" id="price" name="product_price" />
+    </li>
+    <li>
+        <label for="stock">Stock:</label>
+        <input type="text" id="stock" name="product_stock" />
+    </li>
+</form>
+<button id="add_product">Agregar Producto</button>
+
+<h2>Borrar un producto</h2>
+
+<form action="" method="post" id="form_delete">
+    <li>
+        <label for="title">Nombre del Producto:</label>
+        <input type="text" id="title" name="product_title" />
+    </li>
+    <li>
+        <label for="code">Id del producto:</label>
+        <input type="text" id="code" name="product_code" />
+    </li>
+</form>
+<button id="delete_product">Borrar Producto</button>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/index.js"></script>
