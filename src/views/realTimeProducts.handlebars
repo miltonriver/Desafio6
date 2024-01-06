@@ -1,16 +1,19 @@
 <h1>Listado de Productos</h1>
 
-{{#each productos}}
-<li>
-    Nombre: <b>{{this.title}}</b>
-    <p>Precio: <b>$ {{this.price}}</b></p>
-    <p>Stock: <b>{{this.stock}}</b></p>
-</li>
-{{/each}}
+    {{#each productos}}
+<table id="product_table">
+    <li>
+        <tr>Nombre: <b>{{this.title}}</b></tr>
+        <td>Precio: <b>$ {{this.price}}</b></td>
+        <td>Stock: <b>{{this.stock}}</b></td>
+        <td>Id: <b>{{this.id}}</b></td>        
+    </li>
+</table>
+    {{/each}}
 
 <h2>Agregar un producto</h2>
 
-<form action="" method="post" id="form_add">
+<form action="/realTimeProducts" method="post" id="form_add">
     <li>
         <label for="title">Nombre del Producto:</label>
         <input type="text" id="title" name="product_title" />
@@ -23,12 +26,15 @@
         <label for="stock">Stock:</label>
         <input type="text" id="stock" name="product_stock" />
     </li>
+    <li id="submit_button_list">
+        <input value="Agregar" type="submit" id="submit_button">
+    </li>
 </form>
-<button id="add_product">Agregar Producto</button>
+{{!-- <button id="add_product">Agregar Producto</button> --}}
 
 <h2>Borrar un producto</h2>
 
-<form action="" method="post" id="form_delete">
+<form action="/realTimeProducts" method="post" id="form_delete">
     <li>
         <label for="title">Nombre del Producto:</label>
         <input type="text" id="title" name="product_title" />
@@ -37,8 +43,11 @@
         <label for="code">Id del producto:</label>
         <input type="text" id="code" name="product_code" />
     </li>
+    <li id="submit_button_list">
+        <input type="submit" value="Buscar" id="submit_button">
+    </li>
 </form>
-<button id="delete_product">Borrar Producto</button>
+{{!-- <button id="delete_product">Borrar Producto</button> --}}
 
 <script src="/socket.io/socket.io.js"></script>
 <script src="/js/index.js"></script>
