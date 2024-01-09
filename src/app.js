@@ -1,5 +1,6 @@
 import express from "express";
 import __dirname from "./utils.js";
+import ProductsManager from "./ProductManager.js";
 import handlebars from "express-handlebars";
 import productsRouter from "./routers/products.router.js";
 import cartsRouter from "./routers/carts.router.js";
@@ -14,6 +15,7 @@ const httpServer = app.listen(PORT, () => {
 
 //socket del lado del servidor
 const socketServer = new Server(httpServer);//por convención este servidor lleva el nombre de io solamente
+const products = new ProductsManager();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
@@ -23,19 +25,34 @@ app.set('views', __dirname+'/views');
 app.set('view engine', 'handlebars');
 app.use(express.static(__dirname+'/public'));
 app.use('/', viewsRouter);
-//app.use('/realTimeProducts', viewsRouter);
+app.use('/realTimeProducts', viewsRouter);
 
 app.use('/api/products', productsRouter);
 app.use('/api/carts', cartsRouter);
 
+//conexión socket del lado del server
 socketServer.on('connection', socket => {
-    console.log("Nuevo cliente conectado")
+    console.log("El cliente está conectado")
 
-    socket.on('message', data => {
-        console.log(data);
+    /* socket.on("message", data => {
+        console.log(data)
+    }) */
+
+    socket.on("addProduct", async (productData) => {
+        await products.addProduct(productData);
+        console.log(productData)
+
+        socket.emit("productsListAdd", await products.products);
+        console.log('Evento addProduct emitido desde el cliente');
+    });
+
+    socket.on("deleteProduct", async (productData) => {
+        await products.deleteProduct(productData.id);
+        console.log(productData)
+
+        socket.emit("productsList", await products.products)
+        console.log('Evento deleteProduct emitido desde el cliente');
     })
-
-    socket.emit('otro-mensaje', "Para leer en la consola del navegador")
 })
 
 

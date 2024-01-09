@@ -12,21 +12,27 @@ const products = new ProductsManager()
     { title: "producto 4", description: "Este es el cuarto producto de prueba", price: 800, thumbnail: "Sin imagen", code: "abc123456", stock: 100, status: true, category: "products" }
 ] */
 
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
     res.render('home', {
-        productos: products.products,
+        productos:await products.products,
         style: 'index.css'
     });
 })
 
-router.get('/realtimeproducts', (req, res) => {
+router.get('/realtimeproducts', async (req, res) => {
     
+    res.render('realTimeProducts', {
+        productos: await products.products,
+        style: 'index.css'
+    })
+
+})
+
+router.post('/', (req, res) => {
     res.render('realTimeProducts', {
         productos: products.products,
         style: 'index.css'
-
     })
-
 })
 
 export default router;

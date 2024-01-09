@@ -1,12 +1,15 @@
-<h1>Listado de Productos existentes en catálogo</h1>
+<div>
+    <h1>Listado de Productos existentes en catálogo</h1>
 
-{{#each productos}}
+    {{#each productos}}
     <li>
         Nombre: <b>{{this.title}}</b>
         <p>Precio: <b>$ {{this.price}}</b></p>
     </li>
-{{/each}}
+    {{/each}}
+</div>
 
-{{!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js"></script> --}}
+{{!--
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js"></script> --}}
 <script src="/socket.io/socket.io.js"></script>
 <script src="/js/index.js"></script>
