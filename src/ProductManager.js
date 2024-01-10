@@ -36,7 +36,11 @@ class ProductsManager {
     async addProduct(product) {
         try {
             console.log('Iniciando operación AddProduct: ', product)
-            if (!product.title || !product.description || !product.price || !product.thumbnail || !product.code || !product.stock || !product.status || !product.category){
+            if(!product.status){
+                product.status = true;
+            }
+
+            if (!product.title || !product.description || !product.price || !product.thumbnail || !product.code || !product.stock || !product.category){
                 console.log(`Todos los campos del artículo con nombre "${product.title}" deben contener datos`);
                 return `Todos los campos del artículo con nombre "${product.title}" deben contener datos`
             }

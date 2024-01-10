@@ -26,32 +26,21 @@
     "description": "descripción del producto 3",
     "price": "26",
     "thumbnail": "ninguna",
-    "code": "abc45644645",
-    "stock": "12",
-    "status": "true",
+    "code": "abc45648",
+    "stock": "56",
+    "status": true,
     "category": "celular",
     "id": 3
   },
   {
     "title": "producto 4",
     "description": "descripción del producto 4",
-    "price": "19",
+    "price": "152",
     "thumbnail": "ninguna",
     "code": "abc4564",
     "stock": "26",
-    "status": "true",
-    "category": "saldos",
-    "id": 4
-  },
-  {
-    "title": "producto 5",
-    "description": "descripción del producto 5",
-    "price": "152",
-    "thumbnail": "ninguna",
-    "code": "abc45648",
-    "stock": "12",
-    "status": "true",
+    "status": true,
     "category": "celular",
-    "id": 5
+    "id": 4
   }
 ]

@@ -17,20 +17,47 @@ function addProduct() {
     let category = document.getElementById("category").value;
 
     socket.emit("addProduct", { title, description, price, thumbnail, code, stock, status, category });
-
-    socket.on('productsListAdd', data => {
-        console.log('Recibido productList del servidor: ', data)
-    })
 }
-
 
 function deleteProduct(productId) {
     socket.emit("deleteProduct", { id: productId });
-
-    socket.on('productsList', data => {
-        console.log('Recibido productList del servidor: ', data)
-    })
 }
+
+/* socket.on('productsListAdd', data => {
+    console.log('Recibido productList del servidor por el método addProduct: ', data)
+}) */
+
+socket.on('productsList', data => {
+    console.log('Recibido productList del servidor por el método deleteProduct: ', data)
+
+    console.log('Estructura de data:', data);
+    const productList = document.getElementById("productList");
+    console.log('Este es el contenido de la const: ', productList)
+
+    if (productList && Array.isArray(data)) {
+        productList.innerHTML = '';
+
+        const h1 = document.createElement("h1");
+        h1.textContent = "Lista de productos:";
+        productList.appendChild(h1);
+
+        data.forEach((product) => {
+            const productContainer = document.createElement("div");
+            productContainer.innerHTML = `
+            <li>      
+            Nombre: <b>${product.title}</b>
+            <p>Precio: <b>${product.price}</b></p>
+            <p>Código: <b>${product.code}</b></p>
+            <p>Id: <b>${product.id}</b></p>
+            <button type="button" class="delete_button" onclick="deleteProduct(${product.id})">Eliminar</button>
+            </li>
+    `;
+            productList.appendChild(productContainer);
+        });
+    } else {
+        console.log("Error: La estructura de datos de 'data' no es válida.", productList);
+    }
+})
 
 // socket.on('otro-mensaje', data => {
 //     console.log(data)

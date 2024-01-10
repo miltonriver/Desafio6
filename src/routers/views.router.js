@@ -1,8 +1,8 @@
-import express from "express";
+import { Router } from "express";
 import ProductsManager from "../ProductManager.js";
 
 
-const router = express.Router();
+const router = Router();
 const products = new ProductsManager()
 // console.log("Aca esta lo que tiene al inicio el array de productos:", products);
 /* const products = [
@@ -14,25 +14,37 @@ const products = new ProductsManager()
 
 router.get('/', async (req, res) => {
     res.render('home', {
-        productos:await products.products,
+        productos: await products.products,
         style: 'index.css'
     });
 })
 
 router.get('/realtimeproducts', async (req, res) => {
-    
-    res.render('realTimeProducts', {
-        productos: await products.products,
-        style: 'index.css'
-    })
+
+    try {
+        res.render('realTimeProducts', {
+            productos: products.products,
+            style: 'index.css'
+        })
+    } catch (error) {
+        console.log(error);
+        res.render("Error al intentar obtener la lista de productos!");
+        return;
+    }
 
 })
 
 router.post('/', (req, res) => {
-    res.render('realTimeProducts', {
-        productos: products.products,
-        style: 'index.css'
-    })
+    try {
+        res.render('realTimeProducts', {
+            productos: products.products,
+            style: 'index.css'
+        })
+    } catch (error) {
+        console.log(error);
+        res.render("Error al intentar obtener la lista de productos!");
+        return;
+    }
 })
 
 export default router;

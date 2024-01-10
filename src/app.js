@@ -39,19 +39,29 @@ socketServer.on('connection', socket => {
     }) */
 
     socket.on("addProduct", async (productData) => {
-        await products.addProduct(productData);
-        console.log(productData)
-
-        socket.emit("productsListAdd", await products.products);
-        console.log('Evento addProduct emitido desde el cliente');
+        try {
+            await products.addProduct(productData);
+            console.log(productData)
+    
+            socket.emit("productsList", await products.products);
+            console.log('Evento addProduct emitido desde el cliente');
+            
+        } catch (error) {
+            console.error('Error en addProduct:', error);
+        }
     });
 
     socket.on("deleteProduct", async (productData) => {
-        await products.deleteProduct(productData.id);
-        console.log(productData)
-
-        socket.emit("productsList", await products.products)
-        console.log('Evento deleteProduct emitido desde el cliente');
+        try {
+            await products.deleteProduct(productData.id);
+            console.log(productData)
+    
+            socket.emit("productsList", await products.products)
+            console.log('Evento deleteProduct emitido desde el cliente');
+            
+        } catch (error) {
+            console.error('Error en deleteProduct:', error);
+        }
     })
 })
 

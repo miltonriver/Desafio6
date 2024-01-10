@@ -1,14 +1,14 @@
-<div>
+<div id="productList">
     <h1>Listado de Productos</h1>
 
     {{#each productos}}
-    <div id="product_list">
+    <div>
         <li>
             Nombre: <b>{{this.title}}</b>
             <p>Precio: <b>$ {{this.price}}</b></p>
             <p>Código: <b>{{this.code}}</b></p>
             <p>Id: <b>{{this.id}}</b></p>
-            <button type="button" id="delete_button" onclick='deleteProduct({{this.id}})'>Eliminar</button>
+            <button type="button" class="delete_button" onclick='deleteProduct({{this.id}})'>Eliminar</button>
         </li>
     </div>
     {{/each}}
