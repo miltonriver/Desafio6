@@ -35,12 +35,23 @@
   {
     "title": "producto 4",
     "description": "descripción del producto 4",
-    "price": "152",
+    "price": "1596",
     "thumbnail": "ninguna",
     "code": "abc4564",
-    "stock": "26",
+    "stock": "28",
+    "status": true,
+    "category": "nuevos",
+    "id": 5.612992625328339
+  },
+  {
+    "title": "producto 5",
+    "description": "descripción del producto 5",
+    "price": "19",
+    "thumbnail": "ninguna",
+    "code": "abc45644645",
+    "stock": "28",
     "status": true,
     "category": "celular",
-    "id": 4
+    "id": 0.37029646974402475
   }
 ]

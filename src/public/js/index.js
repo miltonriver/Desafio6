@@ -28,17 +28,16 @@ function deleteProduct(productId) {
 }) */
 
 socket.on('productsList', data => {
-    console.log('Recibido productList del servidor por el método deleteProduct: ', data)
+    // console.log('Recibido productList del servidor por el método deleteProduct: ', data)
 
-    console.log('Estructura de data:', data);
     const productList = document.getElementById("productList");
-    console.log('Este es el contenido de la const: ', productList)
+    // console.log('Este es el contenido de la const: ', productList)
 
     if (productList && Array.isArray(data)) {
         productList.innerHTML = '';
 
         const h1 = document.createElement("h1");
-        h1.textContent = "Lista de productos:";
+        h1.textContent = "Listado de productos";
         productList.appendChild(h1);
 
         data.forEach((product) => {

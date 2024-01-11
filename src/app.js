@@ -42,9 +42,10 @@ socketServer.on('connection', socket => {
         try {
             await products.addProduct(productData);
             console.log(productData)
+            // console.log("este es el array", products.products)
     
-            socket.emit("productsList", await products.products);
-            console.log('Evento addProduct emitido desde el cliente');
+            socket.emit("productsList", products.products);//getProducts()
+            // console.log('Evento addProduct emitido desde el cliente');
             
         } catch (error) {
             console.error('Error en addProduct:', error);
@@ -57,7 +58,7 @@ socketServer.on('connection', socket => {
             console.log(productData)
     
             socket.emit("productsList", await products.products)
-            console.log('Evento deleteProduct emitido desde el cliente');
+            // console.log('Evento deleteProduct emitido desde el cliente');
             
         } catch (error) {
             console.error('Error en deleteProduct:', error);

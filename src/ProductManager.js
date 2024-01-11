@@ -2,16 +2,6 @@ import fs from 'fs';
 import path from 'path';
 
 const filePath = 'productos.json';
-/* const data = [{ example: 'data' }];
-
-fs.writeFile(filePath, JSON.stringify(data, null, 2), 'utf8', (err) => {
-    if (err) {
-        console.error('Error al escribir en el archivo:', err);
-    } else {
-        console.log('Datos guardados en el archivo:', filePath);
-    }
-}); */
-
 class ProductsManager {
     constructor(filePath = 'productos.json') {
         this.products = [];
@@ -51,7 +41,7 @@ class ProductsManager {
                 return "No es posible cargar más de un producto con el mismo código"
             }
     
-            product.id = this.products.length + 1
+            product.id = (this.products.length + 1)* Math.random()
             this.products.push(product);
             console.log(`Se agregó el artículo con nombre "${product.title}" al arreglo`);
     

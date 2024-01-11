@@ -17,7 +17,7 @@
 <div>
     <h2>Agregar un producto</h2>
 
-    <form action="/realTimeProducts" method="post" id="form_add">
+    <form action="/realTimeProducts" method="post" id="form_add" onsubmit="addProduct(); return false;">
         <li>
             <label for="title">Nombre del Producto:</label>
             <input type="text" id="title" name="product_title" />
